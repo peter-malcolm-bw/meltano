@@ -16,6 +16,7 @@ but we should explicitly move things over to our own handbook so that we can ada
 - [Engineering Handbook](/handbook/engineering/)
 - [Marketing Handbook](/handbook/marketing/)
 - [Product Handbook](/handbook/product/)
+- [Tech Stack](/handbook/tech-stack/)
 - [Data Learning Resources](/handbook/resources/)
 
 ## Customer Support
