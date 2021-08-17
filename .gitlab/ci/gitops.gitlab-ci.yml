@@ -61,6 +61,7 @@ version_bump_trigger:
       echo "Detected current version '$CURR_VER' and new version '$NEW_VER'"
       [[ "$CURR_VER" == "" ]] && echo "Could not detect current version" && exit 1
       [[ "$NEW_VER" == "" ]] && echo "Could not detect new version" && exit 1
+      [[ "$NEW_VER" == "$CURR_VER" ]] && echo "Version is already bumped. Aborting job." && exit 0
       MAJOR_BUMP="$(bumpversion major --allow-dirty --dry-run --list | grep new_version= | cut -d'=' -f2)"
       MINOR_BUMP="$(bumpversion minor --allow-dirty --dry-run --list | grep new_version= | cut -d'=' -f2)"
       PATCH_BUMP="$(bumpversion patch --allow-dirty --dry-run --list | grep new_version= | cut -d'=' -f2)"
