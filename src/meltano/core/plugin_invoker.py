@@ -6,7 +6,7 @@ import os
 import subprocess
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Optional, Union
+from typing import Any, Dict, Optional, Union
 
 from meltano.core.logging.utils import SubprocessOutputWriter
 
@@ -237,16 +237,16 @@ class PluginInvoker:
 
         return env
 
-    def Popen_options(self):
+    def Popen_options(self) -> Dict[str, Any]:
         return {}
 
     @contextmanager
     def _invoke(
         self,
-        *args,
-        require_preparation=True,
-        env=None,
-        command=None,
+        *args: str,
+        require_preparation: bool = True,
+        env: Optional[Dict[str, Any]] = None,
+        command: Optional[str] = None,
         **kwargs,
     ):
         env = env or {}

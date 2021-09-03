@@ -4,13 +4,13 @@ import shutil
 import subprocess
 from hashlib import sha1
 from pathlib import Path
-from typing import Dict
+from typing import Tuple
 
 from jsonschema import Draft4Validator
 from meltano.core.behavior.hookable import hook
 from meltano.core.job import JobFinder, Payload
 from meltano.core.plugin.error import PluginExecutionError, PluginLacksCapabilityError
-from meltano.core.plugin_invoker import InvokerError
+from meltano.core.plugin_invoker import PluginInvoker
 from meltano.core.setting_definition import SettingDefinition, SettingKind
 from meltano.core.utils import file_has_data, flatten, merge, truthy
 
@@ -209,8 +209,13 @@ class SingerTap(SingerPlugin):
             logger.warning("No state was found, complete import.")
 
     @hook("before_invoke")
-    def discover_catalog_hook(self, plugin_invoker, exec_args=[]):
-        if "--discover" in exec_args or "--help" in exec_args:
+    def discover_catalog_hook(
+        self,
+        plugin_invoker: PluginInvoker,
+        exec_args: Tuple[str, ...] = (),
+    ):
+        # Discover only in sync mode (i.e. no args)
+        if exec_args:
             return
 
         try:
@@ -218,7 +223,11 @@ class SingerTap(SingerPlugin):
         except PluginLacksCapabilityError:
             pass
 
-    def discover_catalog(self, plugin_invoker, exec_args=[]):
+    def discover_catalog(
+        self,
+        plugin_invoker: PluginInvoker,
+        exec_args: Tuple[str, ...] = (),
+    ):
         catalog_path = plugin_invoker.files["catalog"]
         catalog_cache_key_path = plugin_invoker.files["catalog_cache_key"]
 
@@ -268,7 +277,7 @@ class SingerTap(SingerPlugin):
                 f"Catalog discovery failed: invalid catalog: {err}"
             ) from err
 
-    def run_discovery(self, plugin_invoker, catalog_path):
+    def run_discovery(self, plugin_invoker: PluginInvoker, catalog_path: Path):
         if not "discover" in plugin_invoker.capabilities:
             raise PluginLacksCapabilityError(
                 f"Extractor '{self.name}' does not support catalog discovery (the `discover` capability is not advertised)"
@@ -295,8 +304,13 @@ class SingerTap(SingerPlugin):
             )
 
     @hook("before_invoke")
-    def apply_catalog_rules_hook(self, plugin_invoker, exec_args=[]):
-        if "--discover" in exec_args or "--help" in exec_args:
+    def apply_catalog_rules_hook(
+        self,
+        plugin_invoker: PluginInvoker,
+        exec_args: Tuple[str, ...] = (),
+    ):
+        # Apply only in sync mode (i.e. no args)
+        if exec_args:
             return
 
         try:
@@ -304,7 +318,11 @@ class SingerTap(SingerPlugin):
         except PluginLacksCapabilityError:
             pass
 
-    def apply_catalog_rules(self, plugin_invoker, exec_args=[]):
+    def apply_catalog_rules(
+        self,
+        plugin_invoker: PluginInvoker,
+        exec_args: Tuple[str, ...] = (),
+    ):
         if (
             not "catalog" in plugin_invoker.capabilities
             and not "properties" in plugin_invoker.capabilities
