@@ -81,3 +81,11 @@ class TestAirflow:
                 assert airflow_cfg["core"]["dags_folder"]
 
             assert not run_dir.joinpath("airflow.cfg").exists()
+
+    def test_before_cleanup(self, subject, project, session, plugin_invoker_factory):
+        invoker: AirflowInvoker = plugin_invoker_factory(subject)
+
+        assert not invoker.files["config"].exists()
+
+        # No exception should be raised even though the file doesn't exist
+        invoker.cleanup()
