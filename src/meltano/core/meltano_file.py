@@ -1,9 +1,10 @@
 import copy
-from typing import Iterable, List
+from typing import Dict, List
 
 import yaml
 from meltano.core.behavior import NameEq
 from meltano.core.behavior.canonical import Canonical
+from meltano.core.environment import Environment
 from meltano.core.plugin import PluginType
 from meltano.core.plugin.project_plugin import ProjectPlugin
 from meltano.core.schedule import Schedule
@@ -13,7 +14,12 @@ VERSION = 1
 
 class MeltanoFile(Canonical):
     def __init__(
-        self, version: int = VERSION, plugins={}, schedules: list = [], **extras
+        self,
+        version: int = VERSION,
+        plugins={},
+        schedules: list = [],
+        environments: Dict[str, Environment] = {},
+        **extras,
     ):
         super().__init__(
             # Attributes will be listed in meltano.yml in this order:
@@ -21,6 +27,7 @@ class MeltanoFile(Canonical):
             extras=extras,
             plugins=self.load_plugins(plugins),
             schedules=self.load_schedules(schedules),
+            environments=self.load_environments(environments),
         )
 
     def load_plugins(self, plugins) -> Canonical:
@@ -41,3 +48,19 @@ class MeltanoFile(Canonical):
 
     def load_schedules(self, schedules) -> List[Schedule]:
         return list(map(Schedule.parse, schedules))
+
+    @staticmethod
+    def load_environments(environments: Dict[str, dict]) -> Dict[str, Environment]:
+        """Parse `Environment` objects from python objects.
+
+        Args:
+            environments: Mapping of environment names to dictionaries.
+
+        Returns:
+            A dictionary mapping environment names to `Environment` objects.
+        """
+        result = {}
+        for name, obj in environments.items():
+            environment = Environment.parse({"name": name, **obj})
+            result[name] = environment
+        return result
