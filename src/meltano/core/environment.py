@@ -1,3 +1,5 @@
+"""Meltano runtime environments."""
+
 from meltano.core.behavior import NameEq
 from meltano.core.behavior.canonical import Canonical
 
