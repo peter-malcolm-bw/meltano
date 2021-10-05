@@ -18,7 +18,7 @@ class MeltanoFile(Canonical):
         version: int = VERSION,
         plugins={},
         schedules: list = [],
-        environments: Dict[str, Environment] = {},
+        environments: Dict[str, dict] = {},
         **extras,
     ):
         super().__init__(
