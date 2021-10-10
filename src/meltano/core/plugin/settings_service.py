@@ -43,6 +43,8 @@ class PluginSettingsService(SettingsService):
             self.environment_plugin_config = self.environment.config.plugins.get(
                 (self.plugin.type, self.plugin.name),
             )
+        else:
+            self.environment_plugin_config = None
 
     @property
     def label(self):
