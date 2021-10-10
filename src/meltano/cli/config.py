@@ -13,7 +13,8 @@ from meltano.core.plugin_test_service import PluginTestServiceFactory
 from meltano.core.project import Project
 from meltano.core.project_plugins_service import ProjectPluginsService
 from meltano.core.project_settings_service import ProjectSettingsService
-from meltano.core.settings_service import SettingValueStore, StoreNotSupportedError
+from meltano.core.settings_service import SettingValueStore
+from meltano.core.settings_store import StoreNotSupportedError
 from meltano.core.utils import run_async
 
 from . import cli
