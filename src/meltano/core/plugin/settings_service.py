@@ -1,5 +1,3 @@
-from typing import Dict, Iterable, List
-
 from meltano.core.plugin import BasePlugin
 from meltano.core.plugin.project_plugin import ProjectPlugin
 from meltano.core.plugin_discovery_service import PluginDiscoveryService
@@ -41,6 +39,10 @@ class PluginSettingsService(SettingsService):
         }
 
         self._inherited_settings_service = None
+        if self.environment:
+            self.environment_plugin_config = self.environment.config.plugins.get(
+                (self.plugin.type, self.plugin.name),
+            )
 
     @property
     def label(self):
@@ -71,6 +73,13 @@ class PluginSettingsService(SettingsService):
     def meltano_yml_config(self):
         """Return current configuration in `meltano.yml`."""
         return self.plugin.config_with_extras
+
+    @property
+    def environment_config(self):
+        """Return current configuration in `meltano.yml`."""
+        if self.environment_plugin_config:
+            return self.environment_plugin_config.config_with_extras
+        return {}
 
     def update_meltano_yml_config(self, config_with_extras):
         """Update configuration in `meltano.yml`."""

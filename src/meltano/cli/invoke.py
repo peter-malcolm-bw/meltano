@@ -51,7 +51,7 @@ def invoke(
     list_commands: bool,
     plugin_name: str,
     plugin_args: Tuple[str, ...],
-    environment_name: str = None,
+    environment: str = None,
 ):
     """Invoke the plugin's executable with specified arguments."""
     try:
@@ -72,7 +72,12 @@ def invoke(
         do_list_commands(plugin)
         return
 
-    invoker = invoker_factory(project, plugin, plugins_service=plugins_service)
+    invoker = invoker_factory(
+        project,
+        plugin,
+        plugins_service=plugins_service,
+        environment=environment,
+    )
     exit_code = run_async(
         _invoke(invoker, project, plugin_name, plugin_args, session, dump, command_name)
     )

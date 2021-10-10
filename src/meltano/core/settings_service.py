@@ -5,12 +5,13 @@ from abc import ABC, abstractmethod
 from copy import deepcopy
 from typing import Dict, Iterable, List
 
+from meltano.core.project import Project
 from meltano.core.utils import NotFound
 from meltano.core.utils import expand_env_vars as do_expand_env_vars
 from meltano.core.utils import find_named, flatten
 
 from .setting_definition import SettingDefinition, SettingKind, SettingMissingError
-from .settings_store import SettingValueStore, StoreNotSupportedError
+from .settings_store import SettingValueStore
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +23,14 @@ REDACTED_VALUE = "(redacted)"
 class SettingsService(ABC):
     LOGGING = False
 
-    def __init__(self, project, show_hidden=True, env_override={}, config_override={}):
+    def __init__(
+        self,
+        project: Project,
+        show_hidden=True,
+        env_override={},
+        config_override={},
+        environment: str = None,
+    ):
         self.project = project
 
         self.show_hidden = show_hidden
@@ -31,6 +39,7 @@ class SettingsService(ABC):
         self.config_override = config_override
 
         self._setting_defs = None
+        self.environment = self.project.get_environment(environment)
 
     @property
     @abstractmethod
@@ -67,6 +76,12 @@ class SettingsService(ABC):
     @property
     @abstractmethod
     def meltano_yml_config(self) -> Dict:
+        """Return current configuration in `meltano.yml`."""
+        pass
+
+    @property
+    @abstractmethod
+    def environment_config(self) -> dict:
         """Return current configuration in `meltano.yml`."""
         pass
 
