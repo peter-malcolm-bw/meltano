@@ -356,6 +356,18 @@ class MeltanoEnvStoreManager(MeltanoYmlStoreManager):
             self._flat_config = self.settings_service.environment_config
         return self._flat_config
 
+    def set(self, name: str, path: List[str], value, setting_def=None):
+        """TODO: Implement this."""
+        raise NotImplementedError
+
+    def unset(self, name: str, path: List[str], setting_def=None):
+        """TODO: Implement this."""
+        raise NotImplementedError
+
+    def reset(self):
+        """TODO: Implement this."""
+        raise NotImplementedError
+
 
 class DbStoreManager(SettingsStoreManager):
     label = "the system database"

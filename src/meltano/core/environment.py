@@ -98,3 +98,19 @@ class Environment(NameEq, Canonical):
 
         self.name = name
         self.config = EnvironmentConfig(**(config or {}))
+
+    def get_plugin_config(
+        self,
+        plugin_type: PluginType,
+        name: str,
+    ) -> Optional[EnvironmentPluginConfig]:
+        """Get configuration for a plugin in this environment.
+
+        Args:
+            plugin_type: Extractor, loader, etc.
+            name: Plugin name.
+
+        Returns:
+            A plugin configuration object if one is present in this environment.
+        """
+        return self.config.plugins.get((plugin_type, name))

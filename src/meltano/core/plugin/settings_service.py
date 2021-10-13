@@ -42,8 +42,9 @@ class PluginSettingsService(SettingsService):
 
         self._inherited_settings_service = None
         if self.environment:
-            self.environment_plugin_config = self.environment.config.plugins.get(
-                (self.plugin.type, self.plugin.name),
+            self.environment_plugin_config = self.environment.get_plugin_config(
+                self.plugin.type,
+                self.plugin.name,
             )
         else:
             self.environment_plugin_config = None
@@ -80,7 +81,7 @@ class PluginSettingsService(SettingsService):
 
     @property
     def environment_config(self):
-        """Return current configuration in `meltano.yml`."""
+        """Return current environment configuration in `meltano.yml`."""
         if self.environment_plugin_config:
             return self.environment_plugin_config.config_with_extras
         return {}
