@@ -18,6 +18,7 @@ from meltano.core.settings_store import StoreNotSupportedError
 from meltano.core.utils import run_async
 
 from . import cli
+from .environment import environment_option
 from .params import pass_project
 from .utils import CliError
 
@@ -30,8 +31,9 @@ from .utils import CliError
 @click.option("--format", type=click.Choice(["json", "env"]), default="json")
 @click.option("--extras", is_flag=True)
 @pass_project(migrate=True)
+@environment_option
 @click.pass_context
-def config(ctx, project, plugin_type, plugin_name, format, extras):
+def config(ctx, project, plugin_type, plugin_name, format, extras, environment):
     plugin_type = PluginType.from_cli_argument(plugin_type) if plugin_type else None
 
     plugins_service = ProjectPluginsService(project)
@@ -51,7 +53,10 @@ def config(ctx, project, plugin_type, plugin_name, format, extras):
     try:
         if plugin:
             settings = PluginSettingsService(
-                project, plugin, plugins_service=plugins_service
+                project,
+                plugin,
+                plugins_service=plugins_service,
+                environment=environment,
             )
             invoker = PluginInvoker(project, plugin)
             run_async(invoker.prepare(session))
