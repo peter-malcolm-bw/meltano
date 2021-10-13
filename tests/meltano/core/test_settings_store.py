@@ -61,6 +61,10 @@ class DummySettingsService(SettingsService):
     def process_config(self, config):
         return config
 
+    @property
+    def environment_config(self) -> dict:
+        return {}
+
 
 @pytest.fixture()
 def dummy_settings_service(project):
