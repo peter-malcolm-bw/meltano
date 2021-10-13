@@ -1,3 +1,5 @@
+"""Settings manager for Meltano plugins."""
+
 from meltano.core.plugin import BasePlugin
 from meltano.core.plugin.project_plugin import ProjectPlugin
 from meltano.core.plugin_discovery_service import PluginDiscoveryService

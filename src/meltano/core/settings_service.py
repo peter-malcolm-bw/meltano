@@ -26,17 +26,26 @@ class SettingsService(ABC):
     def __init__(
         self,
         project: Project,
-        show_hidden=True,
-        env_override={},
-        config_override={},
+        show_hidden: bool = True,
+        env_override: dict = None,
+        config_override: dict = None,
         environment: str = None,
     ):
+        """Create a new settings service object.
+
+        Args:
+            project: Meltano project object.
+            show_hidden: Whether to display secret setting values.
+            env_override: Optional override environment values.
+            config_override:  Optional override configuration values.
+            environment: Optional Meltano Environment name.
+        """
         self.project = project
 
         self.show_hidden = show_hidden
 
-        self.env_override = env_override
-        self.config_override = config_override
+        self.env_override = env_override or {}
+        self.config_override = config_override or {}
 
         self._setting_defs = None
         self.environment = self.project.get_environment(environment)

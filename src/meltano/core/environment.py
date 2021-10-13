@@ -10,7 +10,7 @@ from meltano.core.plugin.base import PluginRef
 
 
 class EnvironmentNotFound(Exception):
-    pass
+    """Exception raised when a Meltano environment was not found."""
 
 
 class EnvironmentPluginConfig(PluginRef):
@@ -37,10 +37,12 @@ class EnvironmentPluginConfig(PluginRef):
 
     @property
     def extra_config(self):
-        return {f"_{k}": v for k, v in self.extras.items()}
+        """Get extra config from the Meltano environment, like `select` and `schema`."""
+        return {f"_{key}": value for key, value in self.extras.items()}
 
     @property
     def config_with_extras(self):
+        """Get plugin configuration values from the Meltano environment."""
         return {**self.config, **self.extra_config}
 
 

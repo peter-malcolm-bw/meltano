@@ -237,12 +237,11 @@ class Project(Versioned):
             return None
 
         try:
-            environment: Environment = self.meltano.environments[name]
-            return environment
-        except KeyError as e:
+            return self.meltano.environments[name]
+        except KeyError as exc:
             raise EnvironmentNotFound(
                 f"Environment '{name}' is not known to Meltano"
-            ) from e
+            ) from exc
 
     @contextmanager
     def dotenv_update(self):
