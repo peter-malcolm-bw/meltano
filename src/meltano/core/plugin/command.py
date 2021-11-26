@@ -1,10 +1,12 @@
 """Stored command arguments for plugins."""
 import shlex
-from typing import Optional
+from typing import Any, Dict, Optional, Type, TypeVar, Union
 
 from meltano.core.behavior.canonical import Canonical
 from meltano.core.error import Error
 from meltano.core.utils import expand_env_vars
+
+T = TypeVar("T")  # noqa: WPS111
 
 
 class UndefinedEnvVarError(Error):
@@ -72,7 +74,7 @@ class Command(Canonical):
         return super().parse(obj)
 
     @classmethod
-    def parse_all(cls, obj):
+    def parse_all(cls: Type[T], obj: Union[dict, None, Any]) -> Dict[str, T]:
         """Deserialize commands data into a dict of Commands."""
         if isinstance(obj, dict):
             return {name: Command.parse(cmd) for name, cmd in obj.items()}
