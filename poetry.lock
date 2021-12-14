@@ -828,15 +828,15 @@ email = ["email-validator"]
 
 [[package]]
 name = "flatten-dict"
-version = "0.1.0"
+version = "0.4.2"
 description = "A flexible utility for flattening and unflattening dict-like objects in Python."
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.dependencies]
-pathlib2 = ">=2.3"
-six = "*"
+importlib-metadata = {version = "*", markers = "python_version < \"3.8\""}
+six = ">=1.12,<2.0"
 
 [[package]]
 name = "freezegun"
@@ -1265,17 +1265,6 @@ argon2 = ["argon2-cffi (>=18.2.0)"]
 bcrypt = ["bcrypt (>=3.1.0)"]
 build_docs = ["sphinx (>=1.6)", "sphinxcontrib-fulltoc (>=1.2.0)", "cloud-sptheme (>=1.10.1)"]
 totp = ["cryptography"]
-
-[[package]]
-name = "pathlib2"
-version = "2.3.6"
-description = "Object-oriented filesystem paths"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-six = "*"
 
 [[package]]
 name = "pathspec"
@@ -2067,7 +2056,7 @@ infra = []
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.6.2,<3.10"
-content-hash = "2b24a1c204931c629af8b2b3e1270b0a8ca39b0bb948e0f4f1362cbf4c1b961e"
+content-hash = "67e9eec843a422897e5f27bbcef35d143b189811154f9f10a1a3ba8f5034f37e"
 
 [metadata.files]
 aenum = [
@@ -2483,8 +2472,8 @@ flask-wtf = [
     {file = "Flask_WTF-1.0.0-py3-none-any.whl", hash = "sha256:01feccfc395405cea48a3f36c23f0d766e2cc6fd2a5a065ad50ad3e5827ec797"},
 ]
 flatten-dict = [
-    {file = "flatten-dict-0.1.0.tar.gz", hash = "sha256:82944200b8c257d36778691045c53a3cf6925a069a1e8e0890b5e5f6da0e50de"},
-    {file = "flatten_dict-0.1.0-py2.py3-none-any.whl", hash = "sha256:f4f4901e93c253842afb400ddc5e0089058d69b5d6eb6fc4e65277ee4cd4e67a"},
+    {file = "flatten-dict-0.4.2.tar.gz", hash = "sha256:506a96b6e6f805b81ae46a0f9f31290beb5fa79ded9d80dbe1b7fa236ab43076"},
+    {file = "flatten_dict-0.4.2-py2.py3-none-any.whl", hash = "sha256:7e245b20c4c718981212210eec4284a330c9f713e632e98765560e05421e48ad"},
 ]
 freezegun = [
     {file = "freezegun-0.3.15-py2.py3-none-any.whl", hash = "sha256:82c757a05b7c7ca3e176bfebd7d6779fd9139c7cb4ef969c38a28d74deef89b2"},
@@ -2797,10 +2786,6 @@ parso = [
 passlib = [
     {file = "passlib-1.7.4-py2.py3-none-any.whl", hash = "sha256:aa6bca462b8d8bda89c70b382f0c298a20b5560af6cbfa2dce410c0a2fb669f1"},
     {file = "passlib-1.7.4.tar.gz", hash = "sha256:defd50f72b65c5402ab2c573830a6978e5f202ad0d984793c8dde2c4152ebe04"},
-]
-pathlib2 = [
-    {file = "pathlib2-2.3.6-py2.py3-none-any.whl", hash = "sha256:3a130b266b3a36134dcc79c17b3c7ac9634f083825ca6ea9d8f557ee6195c9c8"},
-    {file = "pathlib2-2.3.6.tar.gz", hash = "sha256:7d8bcb5555003cdf4a8d2872c538faa3a0f5d20630cb360e518ca3b981795e5f"},
 ]
 pathspec = [
     {file = "pathspec-0.9.0-py2.py3-none-any.whl", hash = "sha256:7d15c4ddb0b5c802d161efc417ec1a2558ea2653c2e8ad9c19098201dc1c993a"},
