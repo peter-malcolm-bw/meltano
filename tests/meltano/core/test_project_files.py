@@ -1,4 +1,22 @@
+import contextlib
+import os
+import shutil
+
 import pytest  # noqa: F401
+from pathlib import Path
+
+
+@contextlib.contextmanager
+def cd_temp_dir(dirname: str):
+    original_dir = Path.cwd()
+    new_dir = original_dir / dirname
+    new_dir.mkdir()
+    os.chdir(new_dir)
+
+    yield
+
+    os.chdir(original_dir)
+    shutil.rmtree(new_dir)
 
 
 class TestProjectFiles:
@@ -32,6 +50,19 @@ class TestProjectFiles:
             (project_files.root / "subconfig_2.yml"),
             (project_files.root / "subfolder" / "subconfig_1.yml"),
         ]
+
+    def test_resolve_from_subdir(self, project_files):
+        assert Path.cwd().name == "a_multifile_meltano_project"
+
+        with cd_temp_dir("nested_dir"):
+            assert Path.cwd().name == "nested_dir"
+            assert project_files.meltano.get("include_paths", [])
+            assert project_files.include_paths == [
+                (project_files.root / "subconfig_2.yml"),
+                (project_files.root / "subfolder" / "subconfig_1.yml"),
+            ]
+
+        assert Path.cwd().name == "a_multifile_meltano_project"
 
     def test_load(self, project_files):
         expected_result = {
